@@ -1,1 +1,1 @@
-This area was made for coding test.
+This area was created for coding test.
