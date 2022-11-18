@@ -1,5 +1,3 @@
 Forbidden Area.
 
-Not allowed to access
-
-It's for coding test.
+Only allowed to person working on coding test.
