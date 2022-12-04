@@ -10,6 +10,7 @@ for i5 in range(0, sugar//5 + 1):
     for i3 in range(0, sugar//3 + 1):
         if i3*3 + i5*5 == sugar:
             bags.append(i3+i5)
+            break
 
 if len(bags) == 0:
     print(-1)
