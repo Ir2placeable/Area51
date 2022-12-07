@@ -1,13 +1,23 @@
 # 1049 : 기타줄
 # https://www.acmicpc.net/problem/1049
 
-N, M = map(lambda x: int(x), input().split(" "))
+need_strings, brands = map(lambda x: int(x), input().split(" "))
 
-set_min = 10000000
-single_min = 10000000
-for i in range(0, M):
+min_package_cost, min_single_cost = 100000000000, 100000000000
+for i in range(0, brands):
     package_cost, single_cost = map(lambda x: int(x), input().split(" "))
-    set_min = min(set_min, package_cost)
-    single_min = min(single_min, single_cost)
 
-print(min(set_min * (N // 6 + 1), set_min * (N // 6) + single_min * (N % 6)))
+    min_package_cost = min(min_package_cost, package_cost)
+    min_single_cost = min(min_single_cost, single_cost)
+# print(min_package_cost, min_single_cost)
+
+total_cost = 0
+while need_strings > 0:
+    if min_package_cost < min_single_cost * min(6, need_strings):
+        total_cost += min_package_cost
+        need_strings -= 6
+    else:
+        total_cost += min_single_cost
+        need_strings -= 1
+
+print(total_cost)
