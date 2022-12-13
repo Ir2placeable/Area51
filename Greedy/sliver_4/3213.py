@@ -1,23 +1,40 @@
 # 3213 : 피자
 # https://www.acmicpc.net/problem/3213
-import math
 
 n = int(input())
-restofem = []
+rest = []
 
-result = 0
 for i in range(0, n):
     a = input()
-    if a in restofem:
-        restofem.pop(restofem.index(a))
-        continue
-
-    result += 1
     if a == '1/4':
-        restofem.append('3/4')
+        a = 1
     elif a == '1/2':
-        restofem.append('1/2')
+        a = 2
     else:
-        restofem.append('1/4')
+        a = 3
+    rest.append(a)
+rest.sort(reverse=True)
+
+result = 0
+while len(rest) != 0:
+    result += 1
+    piece = rest.pop(0)
+
+    if piece == 3:
+        if 1 in rest:
+            rest.pop(rest.index(1))
+    elif piece == 2:
+        if 2 in rest:
+            rest.pop(rest.index(2))
+        else:
+            temp = 0
+            while temp < 2 and 1 in rest:
+                rest.pop(rest.index(1))
+                temp += 1
+    else:
+        temp = 0
+        while temp < 4 and 1 in rest:
+            rest.pop(rest.index(1))
+            temp += 1
 
 print(result)
