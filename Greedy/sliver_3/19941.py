@@ -1,21 +1,19 @@
 # 19941 : 햄버거 분배
 # https://www.acmicpc.net/problem/19941
+import sys
 
-n, fork = map(lambda x: int(x), input().split(" "))
-temp = input()
+n, fork = map(lambda x: int(x), sys.stdin.readline().split(" "))
+temp = sys.stdin.readline().rstrip()
 table = []
 for char in temp:
     table.append(char)
 
-count = 0
+val = 0
 for i in range(0, n):
-    # 사람 기준 카운트
-    if table[i] == 'P':
-        j = i - fork
-        while (0 <= j < n) and (j <= i + fork):
-            if table[j] == 'H':
+    if table[i] == 'H':
+        for j in range(max(0, i-fork), min(n, i+fork+1), 1):
+            if table[j] == 'P':
+                val += 1
                 table[j] = 'X'
-                count += 1
                 break
-            j += 1
-print(count)
+print(val)
