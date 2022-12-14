@@ -1,24 +1,19 @@
 # 1448 : 삼각형 만들기
 # https://www.acmicpc.net/problem/1448
-
+import sys
 # a < b + c
-n = int(input())
+n = int(sys.stdin.readline())
 item = []
 for i in range(0, n):
-    item.append(int(input()))
+    item.append(int(sys.stdin.readline()))
 item.sort(reverse=True)
 
-a, b, c = 0, 1, 2
-result = 0
-while 1:
+result = -1
+for a in range(0, n-2):
+    b = a + 1
+    c = a + 2
     if item[a] < item[b] + item[c]:
         result = item[a] + item[b] + item[c]
-        break
-    a += 1
-    b += 1
-    c += 1
-    if c == n:
-        result = -1
         break
 
 print(result)
