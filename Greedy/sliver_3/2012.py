@@ -1,14 +1,15 @@
 # 2012 : 등수 매기기
 # https://www.acmicpc.net/problem/2012
+import sys
 
-n = int(input())
-rank = []
+n = int(sys.stdin.readline())
+a = []
+for _ in range(0, n):
+    a.append(int(sys.stdin.readline()))
+a.sort()
+
+b = 0
 for i in range(0, n):
-    rank.append(int(input()))
-rank.sort()
+    b += abs(i+1 - a[i])
 
-val = 0
-for i in range(0, n):
-    val += max(i+1 - rank[i], rank[i] - i - 1)
-
-print(val)
+print(b)
