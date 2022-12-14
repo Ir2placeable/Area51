@@ -11,7 +11,7 @@ for i in range(0, test_case):
     if num_cards == 1:
         print(card_list[0])
     elif num_cards > 1:
-        cur = 'Z'
+        cur = card_list.pop(0)
         result = ''
 
         while len(card_list) > 1:
@@ -20,7 +20,7 @@ for i in range(0, test_case):
             if nex < cur:
                 result += nex
                 cur = nex
-                
+
             else:
                 card_list.append(nex)
         print(result)
