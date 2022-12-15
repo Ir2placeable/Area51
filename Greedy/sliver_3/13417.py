@@ -10,17 +10,15 @@ for i in range(0, test_case):
 
     if num_cards == 1:
         print(card_list[0])
-    elif num_cards > 1:
-        cur = card_list.pop(0)
-        result = ''
+        continue
 
-        while len(card_list) > 1:
-            nex = card_list.pop(0)
+    result = card_list.pop(0)
+    while len(card_list) > 0:
+        card = card_list.pop(0)
 
-            if nex < cur:
-                result += nex
-                cur = nex
+        if card <= result[0]:
+            result = card + result
+        else:
+            result = result + card
 
-            else:
-                card_list.append(nex)
-        print(result)
+    print(result)
