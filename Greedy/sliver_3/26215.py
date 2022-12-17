@@ -3,22 +3,18 @@
 import sys
 
 n = int(sys.stdin.readline())
-
 snow_list = list(map(lambda x: int(x), sys.stdin.readline().rstrip().split(" ")))
 snow_list.sort(reverse=True)
 
-max_time = 1440
 time = 0
 while len(snow_list) > 1:
-    temp_time = snow_list.pop()
-    time += temp_time
-    snow_list[0] -= temp_time
-
-    if time > max_time:
-        time = -1
-        break
+    a = snow_list.pop(0)
+    b = snow_list.pop(0)
+    time += b
+    snow_list.append(a-b)
+    snow_list.sort(reverse=True)
 
 time += snow_list[0]
-if time > max_time:
+if time > 1440:
     time = -1
 print(time)
