@@ -6,19 +6,12 @@ n = int(sys.stdin.readline())
 list1 = list(map(lambda x: int(x), sys.stdin.readline().rstrip().split(" ")))
 list2 = list(map(lambda x: int(x), sys.stdin.readline().rstrip().split(" ")))
 
-# total = 0
-# for i in range(0, n):
-#     print(list1, total)
-#     val, idx = 0, 0
-#     for j in range(0, n):
-#         if val < list1[j]:
-#             val = list1[j]
-#             idx = j
-#
-#     list1[idx] = 0
-#     total += val
-#
-#     for j in range(n):
-#         list1[j] += list2[j]
-#
-# print(total)
+list3 = list(map(lambda a, b : [a, b], list1, list2))
+list3 = sorted(list3, key=lambda x: x[1])
+# print(list3)
+
+total = 0
+for i in range(0, n):
+    total += list3[i][0] + list3[i][1]*i
+
+print(total)
