@@ -1,21 +1,17 @@
 # 2872 : 우리집엔 도서관이 있어
 # https://www.acmicpc.net/problem/2872
+import sys
 
-# 최대 수인 n 부터 하나씩 줄여가며 위로 올려야 한다.
-#
-
-n = int(input())
+n = int(sys.stdin.readline())
 books = []
 for i in range(0, n):
-    books.append(int(input()))
+    books.append(int(sys.stdin.readline()))
 
-now = 0
 moves = 0
-for i in range(0, n):
+for i in range(n-1, -1, -1):
     if books[i] == n:
-        moves += n-i-1
-        break
-    if books[i]+1 != books[i+1]:
+        n -= 1
+    else:
         moves += 1
 
 print(moves)
