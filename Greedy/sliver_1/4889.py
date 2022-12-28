@@ -28,8 +28,3 @@ while True:
     change += len(stack)//2
 
     print(str(test_case) + '. ' + str(change))
-
-# }{
-# {}{}{}
-# {{{}
-# ---
