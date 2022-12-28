@@ -4,7 +4,10 @@
 # 이런 문제 특징 : 그리디 + 스택 사용이다.
 import sys
 
+test_case = 0
 while True:
+    test_case += 1
+
     string = sys.stdin.readline().rstrip()
     if string[0] == '-':
         break
@@ -24,4 +27,9 @@ while True:
 
     change += len(stack)//2
 
-    print(change)
+    print(str(test_case) + '. ' + str(change))
+
+# }{
+# {}{}{}
+# {{{}
+# ---
