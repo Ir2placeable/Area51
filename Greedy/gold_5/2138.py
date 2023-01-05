@@ -1,45 +1,64 @@
 # 2138 : 전구와 스위치
 # https://www.acmicpc.net/problem/2138
 
-# 스위치는 누르면 본인과 양쪽 전구의 전원이 켜지거나 꺼진다.
-# 이런 문제는 규칙을 찾아야 한다.
-# 모든 전구를 순회해야 한다. -> O(n) = n
-#
-# import sys
-#
-# n = int(sys.stdin.readline())
-# original = sys.stdin.readline().rstrip()
-# target = sys.stdin.readline().rstrip()
-#
-#
-# # 첫 전구를 켤 때
-# def case1():
-#     count = 1
-#     light0 = str((int(original[0]) + 1) % 2)
-#     light1 = str((int(original[1]) + 1) % 2)
-#
-#     for i in range(1, n):
-#         if original[i-1] != target[i-1]:
-#             count += 1
-#             light0 = str((int(original[i-1]) + 1) % 2)
-#             light1 = str((int(original[i]) + 1) % 2)
-#         else:
-#             light0 = original[i]
-#             light1 =
-#     return count
-#
-#
-# # 첫 전구를 켜지 않을 때
-# def case2():
-#     count = 0
-#     light0 = original[0]
-#     light1 = original[1]
-#
-#     for i in range(1, n):
-#         if original[i-1] != target[i-1]:
-#             count += 1
-#             light0 = str((int(original[i-1]) + 1) % 2)
-#             light1 = str((int(original[i]) + 1) % 2)
-#     return count
-#
-# print(case1(), case2())
+import sys
+
+n = int(sys.stdin.readline())
+a = sys.stdin.readline().rstrip()
+b = sys.stdin.readline().rstrip()
+
+original = []
+target = []
+for i in a:
+    original.append(int(i))
+for i in b:
+    target.append(int(i))
+# print(original)
+# print(target)
+
+
+def switch(bulbs, index):
+    for i in range(max(0, index-1), min(n, index+2)):
+        bulbs[i] = (bulbs[i] + 1) % 2
+
+
+# not turn on the first switch
+def case1():
+    count = 0
+
+    temp1 = original[:]
+    temp2 = target[:]
+
+    for i in range(1, n):
+        if temp1[i-1] != temp2[i-1]:
+            count += 1
+            switch(temp1, i)
+
+    if temp1[-1] != temp2[-1]:
+        count = 100001
+    return count
+
+# turn on the first switch
+def case2():
+    count = 1
+
+    temp1 = original[:]
+    temp2 = target[:]
+    switch(temp1, 0)
+
+    for i in range(1, n):
+        if temp1[i-1] != temp2[i-1]:
+            count += 1
+            switch(temp1, i)
+
+    if temp1[-1] != temp2[-1]:
+        count = 100001
+
+    return count
+
+
+result = min(case1(), case2())
+if result == 100001:
+    print(-1)
+else:
+    print(result)
