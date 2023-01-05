@@ -1,30 +1,32 @@
 # 21758 : 꿀 따기
 # https://www.acmicpc.net/problem/21758
 
-# 모든 수를 더한다.
-#
 n = int(input())
-items = list(map(lambda x: int(x), input().split(" ")))
+flowers = list(map(lambda x: int(x), input().split(" ")))
 
-max_val = 0
-
+max_honey = 0
 # 벌통 중간
-for mid in range(1, n-1):
-    left = sum(items[1:mid+1])
-    right = sum(items[mid:n-1])
-    # print(a,b,mid)
-    max_val = left + right
-
-# 벌통 맨 마지막
-default_val = sum(items[1:])
+default_honey = sum(flowers) - flowers[0] - flowers[-1]
 for i in range(1, n-1):
-    additional_val = sum(items[i+1:]) - items[i]
-    max_val = max(max_val, default_val + additional_val)
+    temp_honey = default_honey + flowers[i]
+    max_honey = max(max_honey, temp_honey)
+# print(max_honey)
 
-# 벌통 맨 앞
-default_val = sum(items[:n-1])
+# 벌통 오른쪽 고정
+default_honey = sum(flowers[1:]) * 2
+lost_honey = 0
 for i in range(1, n-1):
-    additional_val = sum(items[:i]) - items[i]
-    max_val = max(max_val, default_val + additional_val)
+    lost_honey += flowers[i]
+    temp_honey = default_honey - lost_honey - flowers[i]
+    max_honey = max(max_honey, temp_honey)
+# print(max_honey)
 
-print(max_val)
+# 벌통 왼쪽 고정
+flowers.reverse()
+default_honey = sum(flowers[1:]) * 2
+lost_honey = 0
+for i in range(1, n-1):
+    lost_honey += flowers[i]
+    temp_honey = default_honey - lost_honey - flowers[i]
+    max_honey = max(max_honey, temp_honey)
+print(max_honey)
