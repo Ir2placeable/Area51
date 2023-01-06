@@ -17,14 +17,38 @@ for _ in range(m):
 visited = [0 for _ in range(n+1)]
 visited[target1] = 1
 
-queue = deque([target1])
-while queue:
-    start = queue.popleft()
+
+# BFS
+# queue = deque([target1])
+# while queue:
+#     start = queue.popleft()
+#
+#     for end in graph[start]:
+#         if visited[end] == 0:
+#             visited[end] = visited[start] + 1
+#             queue.append(end)
+#
+# if visited[target2] == 0:
+#     print(-1)
+# else:
+#     print(visited[target2] - 1)
+#
+
+# DFS
+import sys
+sys.setrecursionlimit(10 ** 6)
+
+def dfs(start):
+    if start == target2:
+        return
 
     for end in graph[start]:
         if visited[end] == 0:
             visited[end] = visited[start] + 1
-            queue.append(end)
+            dfs(end)
+
+
+dfs(target1)
 
 if visited[target2] == 0:
     print(-1)
