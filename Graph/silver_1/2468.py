@@ -27,7 +27,6 @@ for height in range(max_height, -1, -1):
 
     from collections import deque
 
-    # visited = [[0 for a in range(n)] for b in range(n)]
     land = 0
     for y in range(n):
         for x in range(n):
@@ -37,7 +36,6 @@ for height in range(max_height, -1, -1):
                 # BFS start
                 queue = deque([[y, x]])
                 target_graph[y][x] = 0
-                # visited[y][x] = 1
 
                 while queue:
                     qy, qx = queue.popleft()
@@ -46,15 +44,11 @@ for height in range(max_height, -1, -1):
                         if target_graph[_y][qx] == 1:
                             target_graph[_y][qx] = 0
                             queue.append([_y, qx])
-                        # if visited[_y][qx] == 0:
-                        #     visited[_y][qx] = 1
-                        #     queue.append([_y, qx])
+
                     for _x in range(max(0, qx-1), min(n, qx+2)):
                         if target_graph[qy][_x] == 1:
                             target_graph[qy][_x] = 0
                             queue.append([qy, _x])
-                        # if visited[qy][_x] == 0:
-                        #     visited[qy][_x] = 1
-                        #     queue.append([qy, _x])
+
     max_lands = max(max_lands, land)
 print(max_lands)
