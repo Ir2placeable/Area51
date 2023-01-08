@@ -17,6 +17,8 @@ for _ in range(test_case):
     queue = deque([[x1, y1]])
     while queue:
         x2, y2 = queue.popleft()
+        if x2 == x0 and y2 == y0:
+            break
 
         for move_case in move_cases:
             x3, y3 = x2 + move_case[0], y2 + move_case[1]
