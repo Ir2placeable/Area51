@@ -4,32 +4,17 @@ import sys
 from collections import deque
 
 string = sys.stdin.readline().rstrip()
-items = deque([])
-for char in string:
-    items.append(char)
-# print(items)
 
-# items에 있는 요소를 모두 뽑는다.
 stack = []
-result = 'PPAP'
-while items:
-    # 앞에서 부터 뽑는다.
-    item = items.popleft()
-
-    if item == 'A':
-        if len(stack) < 2:
-            result = 'NP'
-            break
-        if len(items) == 0:
-            result = 'NP'
-            break
-        if items[0] == 'A':
-            result = 'NP'
-            break
-        # PPAP 달성
-        stack.pop()
-        stack.pop()
-    elif item == 'P':
-        stack.append(item)
-
-print(result)
+ace = 0
+for char in string:
+    if char == 'P' and ace == 0:
+        stack.append(char)
+    elif char == 'A':
+        ace = 1
+        stack.append(char)
+    elif char == 'P' and ace == 1:
+        ace = 0
+        for _ in range(3):
+            stack.pop()
+        stack.append(char)

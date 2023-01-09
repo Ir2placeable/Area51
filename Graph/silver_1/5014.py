@@ -12,21 +12,25 @@ total, start, target, up, down = map(lambda x: int(x), input().split(" "))
 
 from collections import deque
 visited = [0 for _ in range(total + 1)]
+visited[start] = 1
 
 queue = deque([start])
 while queue:
     point = queue.popleft()
+    if point == target:
+        break
 
     moving_case = [point + up, point - down]
     for case in moving_case:
-        if case < 0 or case > total:
+        if case <= 0 or case > total:
             continue
 
         if visited[case] == 0:
             queue.append(case)
             visited[case] = visited[point] + 1
 
+# print(visited)
 if visited[target] == 0:
     print('use the stairs')
 else:
-    print(visited[target])
+    print(visited[target] - 1)
