@@ -4,12 +4,9 @@
 import sys
 k = int(sys.stdin.readline())
 
-result = [[1, 0], [0, 1]]
+a, b = 1, 0
 
-def dp(num):
-    if num < 2:
-        return result[num]
-
-    return [dp(num-1)[1], dp(num-1)[0] + dp(num-1)[1]]
-
-print(*dp(k))
+while k > 0:
+    a, b = b, a+b
+    k -= 1
+print(a, b)
