@@ -24,12 +24,11 @@ while queue:
         next_locations.append(location * 2)
     while next_locations:
         next_location = next_locations.pop()
-        if visited[next_location] > time:
+        if visited[next_location] > visited[location]:
             visited[next_location] = visited[location]
             queue.append(next_location)
             # print(next_location, visited[next_location])
 
-    time += 1
 
     if location > 0:
         next_locations.append(location - 1)
@@ -38,7 +37,7 @@ while queue:
     
     while next_locations:
         next_location = next_locations.pop()
-        if visited[next_location] > time:
+        if visited[next_location] > visited[location] + 1:
             visited[next_location] = visited[location] + 1
             queue.append(next_location)
             # print(next_location, visited[next_location])
