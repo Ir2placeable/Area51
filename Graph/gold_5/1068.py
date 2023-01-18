@@ -3,26 +3,31 @@
 import sys
 from collections import deque
 
-n = int(sys.stdin.readline())
-parents = list(map(lambda x: int(x), sys.stdin.readline().split()))
-x = int(sys.stdin.readline())
-# print(parents)
+# 본 문제의 문제 풀이 방식은 다음과 같다.
+# 1. 부러진 노드와 해당 모든 자식들을 부러뜨린다. -> -2로 표시한다.
+# 2-1. 모든 노드를 탐색한다. 부러진 노드 이거나, 해당 노드의 자식이 없는 경우에 -> 리프 노드로 취급한다.
+# 2-2. 해당 노드의 자식이 없다 == parents 리스트의 해당 노드가 없다.
 
-# x : 부러진 노드를 의미함
-# parents에서 x를 가지고 있는 노드 또한 부러진 노드로 변경
+
+n = int(sys.stdin.readline())
+parent_node_list = list(map(lambda x: int(x), sys.stdin.readline().split()))
+x = int(sys.stdin.readline())
+
+# 1. BFS 방식으로 노드를 부러뜨린다.
+parent_node_list[x] = -2
 
 queue = deque([x])
 while queue:
     broken_node = queue.popleft()
-    parents[broken_node] = -2
 
-    while broken_node in parents:
-        target_index = parents.index(broken_node)
+    while broken_node in parent_node_list:
+        target_index = parent_node_list.index(broken_node)
         queue.append(target_index)
-        parents[target_index] = -2
+        parent_node_list[target_index] = -2
 
+# 2. 리프 노드를 센다.
 leaf_node = 0
-for node in range(0, n):
-    if parents[node] != -2 and node not in parents:
+for current_node in range(0, n):
+    if (parent_node_list[current_node] != -2) and (current_node not in parent_node_list):
         leaf_node += 1
 print(leaf_node)
