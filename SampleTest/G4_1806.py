@@ -1,7 +1,6 @@
 # https://www.acmicpc.net/problem/1806
 
-# 스위핑 부분합 + 브루트포스 문제인 것 같음.
-# 시작 인덱스를 브루트포스로 해보자
+# left, right 투 포인터로 풀면 그만이야~
 import sys
 
 n, target = map(lambda x: int(x), sys.stdin.readline().split())
