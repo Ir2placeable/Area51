@@ -32,6 +32,6 @@ for x in x_list:
         for sx, sy in stars:
             if x <= sx <= nx and y <= sy <= ny:
                 temp_result -= 1
-        
+
         result = min(result, temp_result)
 print(result)
