@@ -9,20 +9,13 @@
 import sys
 
 n = int(sys.stdin.readline())
-dp = [0, 1, 1, 1, 2]
+dp = [0 for _ in range(n+1)]
 
-if n < len(dp):
-    print(dp[n])
-else:
-    index = 5
-    while index < n+1:
-        temp = [dp[index-1] + 1]
-        if index % 3 == 0:
-            temp.append(dp[index//3] + 1)
-        if index % 2 == 0:
-            temp.append(dp[index//2] + 1)
+for i in range(2, n+1):
+    dp[i] = dp[i-1] + 1
 
-        dp.append(min(temp))
-        index += 1
-
-    print(dp[n])
+    if i % 3 == 0:
+        dp[i] = min(dp[i], dp[i//3] + 1)
+    if i % 2 == 0:
+        dp[i] = min(dp[i], dp[i//2] + 1)
+print(dp[n])
