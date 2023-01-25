@@ -9,4 +9,3 @@ for _ in range(test_case):
         dp.append(dp[len(dp)-2] + dp[len(dp)-1] + dp[len(dp)-3])
 
     print(dp[n])
-    
