@@ -3,15 +3,26 @@
 # 딱 봐도 dp 문제임 -> 점화식을 찾는 것이 관건
 import sys
 
-dp = [0, 1]
+# 0 : 1
+# 1 : 1
+# 2 : 1 / 2
+# 3 : 1 / 2 / 3
+# 4 : 1 / 2 / 3 / 22
+# 5 : 1 / 2 / 3 / 22 / 23
+# 6 : 1 / 2 / 3 / 22 / 23 / 33 / 222
 
-index = 2
-while index < 30:
-    temp = dp[index-1]
-    if index % 2 == 0:
-        temp += 
-    if index % 3 == 0:
-        temp += 1
-    dp.append(temp)
-    index += 1
-print(dp[4], dp[7], dp[10])
+
+test_case = int(sys.stdin.readline())
+for _ in range(test_case):
+    n = int(sys.stdin.readline())
+
+    dp = [1 for _ in range(n+1)]
+    for i in range(2, n+1):
+        if i % 2 == 0:
+            dp[i] += dp[i-2]
+        if i % 3 == 0:
+            dp[i] += dp[i-3]
+
+
+    print(dp)
+    print(dp[n])
