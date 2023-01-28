@@ -7,25 +7,26 @@ import sys
 numbers = set([])
 n = int(sys.stdin.readline())
 for _ in range(n):
-    temp = list(sys.stdin.readline().split())
+    temp = sys.stdin.readline().strip().split()
     if len(temp) == 1:
         if temp[0] == 'all':
-            numbers = set([str(i) for i in range(1, 21)])
-        elif temp[0] == 'empty':
-            numbers.clear()
+            numbers = set([i for i in range(1, 21)])
+        else:
+            numbers = set()
     else:
-        if temp[0] == 'add':
-            numbers.add(temp[1])
-        elif temp[0] == 'remove':
-            numbers.discard(temp[1])
-        elif temp[0] == 'check':
-            if temp[1] in numbers:
+        operator, num = temp[0], int(temp[1])
+        
+        if operator == 'add':
+            numbers.add(num)
+        elif operator == 'remove':
+            numbers.discard(num)
+        elif operator == 'check':
+            if num in numbers:
                 print(1)
-            elif temp[1] not in numbers:
+            else:
                 print(0)
-        elif temp[0] == 'toggle':
-            numbers.discard(temp[1])
-            if temp[1] in numbers:
-                numbers.discard(temp[1])
-            elif temp[1] not in numbers:
-                numbers.add(temp[1])
+        elif operator == 'toggle':
+            if num in numbers:
+                numbers.discard(num)
+            else:
+                numbers.add(num)
