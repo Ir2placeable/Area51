@@ -12,13 +12,10 @@ for i in range(n):
     add = nums[i]
 
     for j in range(base, n):
+        if add == 0 and result[j] == 0:
+            result[j] = i + 1
+            break
         if result[j] == 0:
-            if add == 0:
-                result[j] = i + 1
-                break
-
             add -= 1
 
-
-
-print(result)
+print(*result)
