@@ -5,37 +5,33 @@
 
 # 땅의 높이는 0 ~ 255
 # 가로, 세로는 500, 500 = 250,000
-# 250,000 * 256 = 64,000,000-> 완전 탐색은 불가능하다.
-
-# 최대한 깎지 않는 방향으로 설계해야 한다.
+# 250,000 * 256 = 64,000,000
 
 import sys
-from collections import defaultdict
-
-height, width, blocks = map(lambda x: int(x), sys.stdin.readline().split())
-numbers = defaultdict(int)
+height, width, inventory = map(lambda x: int(x), sys.stdin.readline().split())
 maps = []
+
 for _ in range(height):
-    temp = list(map(lambda x: int(x), sys.stdin.readline().split()))
-    for num in temp:
-        numbers[num] += 1
-    maps.append(temp)
+    maps.append(list(map(lambda x: int(x), sys.stdin.readline().split())))
 
 result = [sys.maxsize, 0]
-for target_height, _ in sorted(numbers.items(), key=lambda x: x[0]):
-    inventory = blocks
+for target_height in range(257):
     time = 0
-    for single_map in maps:
-        for num in single_map:
-            if num > target_height:
-                time += (num - target_height) * 2
-                inventory += (num - target_height)
-            elif num < target_height:
-                time += target_height - num
-                inventory -= target_height - num
-    if inventory < 0:
+    temp_inventory = inventory
+    for y in range(height):
+        for x in range(width):
+            location = maps[y][x]
+            if location > target_height:
+                time += 2 * (location - target_height)
+                temp_inventory += location - target_height
+            elif location < target_height:
+                time += target_height - location
+                temp_inventory -= (target_height - location)
+
+    if temp_inventory < 0:
         continue
 
-    if result[0] > time:
+    if result[0] >= time:
         result = [time, target_height]
+
 print(*result)
