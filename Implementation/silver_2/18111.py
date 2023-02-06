@@ -24,7 +24,7 @@ for target_height in range(257):
             if location > target_height:
                 time += 2 * (location - target_height)
                 temp_inventory += location - target_height
-            elif location < target_height:
+            else:
                 time += target_height - location
                 temp_inventory -= (target_height - location)
 
