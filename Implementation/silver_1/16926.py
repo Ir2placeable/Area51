@@ -1,4 +1,5 @@
 # https://www.acmicpc.net/problem/16926
+
 import sys
 
 height, width, k = map(lambda x: int(x), sys.stdin.readline().split())
