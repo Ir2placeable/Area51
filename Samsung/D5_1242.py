@@ -1,52 +1,71 @@
-# 구현 문제
+# 구현
+# 55분 컷
 
-# 1. 직사각형 배열을 2진수로 변환한다.
-# 2. 각 줄의 비율을 조사하여 -> 8자리 코드로 만든다.
-# 3. 체크섬을 판별한다.
-# 4. 정상코드의 수를 합한다.
+HexToBin = {'0':'0000', '1':'0001', '2':'0010', '3':'0011',
+         '4':'0100', '5':'0101', '6':'0110', '7':'0111',
+         '8':'1000', '9':'1001', 'A':'1010', 'B':'1011',
+         'C':'1100', 'D':'1101', 'E':'1110', 'F':'1111'}
 
-# 30분 초과 실패
-
-
-codeDictionary = {3211: 0, 2221: 1, 2122: 2, 1411: 3, 1132: 4, 1231: 5, 1114: 6, 1312: 7, 1213: 8, 3112: 9}
+Decoding = {'211':0, '221':1, '122':2, '411':3, '132':4, '231':5, '114':6, '312':7, '213':8, '112':9}
 
 
-def HexTobin(hexNum):
-    return bin(int(hexNum, 16))[2:].zfill(4)
+def getIndexOfCode(a, b, c):
+    k = min(a, b, c)
+    a //= k
+    b //= k
+    c //= k
+    return str(100 * a + 10 * b + c)
 
+def verifyCheckSum(numbers):
+    temp = sum(numbers)
+    for i in range(0, 8, 2):
+        temp += numbers[i] * 2
 
-def Decoding(encodedNum):
-    temp_code = []
-    cur_code = encodedNum[0]
-    cur_count = 0
-
-    for i in range(0, len(encodedNum)):
-        if cur_code == encodedNum[i]:
-            cur_count += 1
-        else:
-            temp_code.append(cur_count)
-            cur_count = 1
-            cur_code = encodedNum[i]
-    temp_code.append(cur_count)
-
-    temp_code = list(map(lambda x: str(x // min(temp_code)), temp_code))
-    temp_code = int(sum(temp_code))
-    return codeDictionary[temp_code]
-
+    if temp % 10 == 0:
+        return True
+    else:
+        return False
 
 t = int(input())
+
 for test_case in range(1, t+1):
     height, width = map(lambda x: int(x), input().split())
+    hex_code = [input() for _ in range(height)]
+
+    bin_code = ['' for _ in range(height)]
+    for i in range(height):
+        for j in range(width):
+            bin_code[i] += HexToBin[hex_code[i][j]]
+
+    result = 0
     codes = []
-    for _ in range(height):
-        temp_code = ''
-        for char in input():
-            temp_code += HexTobin(char)
-        codes.append(temp_code)
+    histories = []
+    for y in range(height):
+        a, b, c = 0, 0, 0
+        for x in range(4 * width -1, -1, -1):
+            if a == 0 and b == 0 and bin_code[y][x] == '1':
+                c += 1
+            elif c > 0 and a == 0 and bin_code[y][x] == '0':
+                b += 1
+            elif c > 0 and b > 0 and bin_code[y][x] == '1':
+                a += 1
 
-    for single_code in codes:
-        for i in range(0, len(single_code), 8):
-            print(single_code[i:i+8])
+            if a > 0 and b > 0 and c > 0 and bin_code[y][x] == '0':
+                # 암호코드 발견
+                codes.append(Decoding[getIndexOfCode(a, b, c)])
+                a, b, c = 0, 0, 0
 
+            # 암호코드 8자리가 완성되면
+            if len(codes) == 8:
+                codes.reverse()
 
+                # 히스토리에 추가한다.
+                if codes not in histories:
+                    histories.append(codes)
 
+                    # 정상 암호코드인 경우 결과값을 더한다.
+                    if verifyCheckSum(codes):
+                        result += sum(codes)
+                codes = []
+
+    print("#%d %d" % (test_case, result))
