@@ -9,4 +9,3 @@ for test_case in range(1, t + 1):
     scales = temp[n:]
 
     default_F = 0
-    for i in range()
