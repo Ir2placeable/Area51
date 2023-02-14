@@ -1,5 +1,6 @@
 # BFS
 # 맵 만드는 과정이 핵심이다.
+# 1시간
 
 from collections import deque
 
