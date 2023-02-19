@@ -8,10 +8,9 @@ for _ in range(n):
 
     case_num = temp[0]
     nums = deque(temp[1:])
-    del temp
 
     result = 0
-    line = deque([])
+    line = []
     while nums:
         num = nums.popleft()
 
@@ -19,10 +18,15 @@ for _ in range(n):
             line.append(num)
             continue
 
-        if line[0] > num:
-            result += len(line)
-            line.appendleft(num)
-        else:
+        inserted = False
+        for i in range(len(line)):
+            if line[i] > num:
+                result += len(line) - i
+                line.insert(i, num)
+                inserted = True
+                break
+
+        if not inserted:
             line.append(num)
 
     print("%d %d" % (case_num, result))
