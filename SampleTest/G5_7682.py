@@ -1,8 +1,6 @@
 # https://www.acmicpc.net/problem/7682
+# 소요시간 : 51분
 import sys
-
-players = ['X', 'O']
-
 
 def EndCondition(state):
     isEnd1 = True
@@ -38,13 +36,8 @@ def EndCondition(state):
 
 
 def TicTacToe(cur_state, cur_player):
-    # print(cur_state)
-    global result
-    if cur_state == target_state:
-        result = 'valid'
-        return
-
     if EndCondition(cur_state):
+        final_states.append(cur_state[:])
         return
 
     for i in range(9):
@@ -60,15 +53,19 @@ def TicTacToe(cur_state, cur_player):
         visited[i] = 0
 
 
+players = ['X', 'O']
+init_state = ['.' for _ in range(9)]
+visited = [0 for _ in range(9)]
+final_states = []
+TicTacToe(init_state, 0)
+
 while True:
     string = sys.stdin.readline().rstrip()
     if string == 'end':
         break
 
     target_state = list(string)
-    init_state = ['.' for _ in range(9)]
-    visited = [0 for _ in range(9)]
-
-    result = 'Invalid'
-    TicTacToe(init_state, 0)
-    print(result)
+    if target_state in final_states:
+        print('valid')
+    else:
+        print('invalid')
