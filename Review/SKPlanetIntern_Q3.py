@@ -1,75 +1,81 @@
-dy = [-1, 0, 1, 0]
-dx = [0, 1, 0, -1]
+from copy import deepcopy
+
 result = 0
 n = 0
+dy = [-1, 1, 0, 0]
+dx = [0, 0, -1, 1]
 
 
-def CheckFull(maps):
+def checkFlowers(visited):
     for y in range(n):
         for x in range(n):
-            if maps[y][x] == '1':
+            if visited[y][x] == '1':
                 return False
     return True
 
 
-def MoveCharacter(cur_y, cur_x, cur_d, maps):
+def MoveCharacter(cur_y, cur_x, visited):
     global result
-    nex_y = cur_y + dy[cur_d]
-    nex_x = cur_x + dx[cur_d]
+    # 움직일 수 있는 방향 찾기
+    nex_d_list = []
+    for i in range(4):
+        nex_y = cur_y + dy[i]
+        nex_x = cur_x + dx[i]
 
-    # 전진할 수 없으면, 방향을 변경한다.
-    if nex_y < 0 or nex_x < 0 or nex_y > n-1 or nex_x > n-1 or maps[nex_y][nex_x] != '1':
-        for _ in range(3):
-            cur_d = (cur_d + 1) % 4
-            MoveCharacter(cur_y, cur_x, cur_d)
-    direction_count = 0
-    isBlocked = False
-    while nex_y < 0 or nex_x < 0 or nex_y > n-1 or nex_x > n-1 or maps[nex_y][nex_x] != '1':
-        if direction_count == 3:
-            isBlocked = True
-            break
-        cur_d = (cur_d + 1) % 4
-        nex_y = cur_y + dy[cur_d]
-        nex_x = cur_x + dx[cur_d]
+        if 0 <= nex_y < n and 0 <= nex_x < n and visited[nex_y][nex_x] == '1':
+            nex_d_list.append(i)
 
-        direction_count += 1
-
-    # 방향이 모두 막혀 있으면
-    if isBlocked:
-        maps[cur_y][cur_x] = '0'
-        if CheckFull(maps):
+    # 움직일 수 있는 방향이 없다
+    if not nex_d_list:
+        visited[cur_y][cur_x] = '0'
+        if checkFlowers(visited):
             result = 1
-
-        maps[cur_y][cur_x] = '1'
         return
 
-    # 전진할 수 있으면, 그대로 이동한다. + 백트래킹
-    maps[cur_y][cur_x] = '0'
-    MoveCharacter(nex_y, nex_x, cur_d, maps)
-    maps[cur_y][cur_x] = '1'
+    # 움직일 수 있는 방향이 있다
+    for nex_d in nex_d_list:
+        visited_temp = deepcopy(visited)
+
+        # 특정 방향으로 최대한 움직인다.
+        cur_x_temp = cur_x
+        cur_y_temp = cur_y
+
+        nex_y = cur_y_temp + dy[nex_d]
+        nex_x = cur_x_temp + dx[nex_d]
+
+        while 0 <= nex_y < n and 0 <= nex_x < n and visited_temp[nex_y][nex_x] == '1':
+            visited_temp[cur_y_temp][cur_x_temp] = '0'
+
+            cur_y_temp, cur_x_temp = nex_y, nex_x
+
+            nex_y = cur_y_temp + dy[nex_d]
+            nex_x = cur_x_temp + dx[nex_d]
+
+        MoveCharacter(cur_y_temp, cur_x_temp, visited_temp)
 
 
 def solution(boards):
-    global n, result
+    global result, n
     answer = []
 
-    for board in boards:
+    for test_case in boards:
         result = 0
-        n = len(board)
+        n = len(test_case)
 
-        maps = [[0 for _ in range(n)] for _ in range(n)]
-        x = y = 0
-        for i in range(n):
-            for j in range(n):
-                if board[i][j] == '2':
-                    x, y = j, i
-                maps[i][j] = board[i][j]
+        maps = [list(single_line) for single_line in test_case]
 
-        MoveCharacter(y, x, 0, maps)
+        character_x = character_y = 0
+        for y in range(n):
+            for x in range(n):
+                if maps[y][x] == '2':
+                    character_x = x
+                    character_y = y
+
+        MoveCharacter(character_y, character_x, maps)
         answer.append(result)
+
     return answer
 
 
-# print(solution([["1111", "1121", "1001", "1111"], ["0000", "0000", "0000", "0002"], ["0000", "0100", "0000", "0002"],
-#                 ["0000", "0010", "0120", "0010"]]))
 print(solution([["00011", "01111", "21001", "11001", "01111"], ["00011", "00011", "11111", "12101", "11111"]]))
+print(solution([["1111", "1121", "1001", "1111"], ["0000", "0000", "0000", "0002"], ["0000", "0100", "0000", "0002"], ["0000", "0010", "0121", "0010"]]))
