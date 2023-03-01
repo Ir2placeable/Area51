@@ -64,6 +64,11 @@ while queue:
             fire_spreading[ny][nx] = fire_spreading[qy][qx] + 1
             queue.append([ny, nx])
 
+for temp in visited:
+    print(*temp)
+print()
+for temp in fire_spreading:
+    print(*temp)
 # 탈출구를 돌면서 값이 있는지 확인한다. visited[y][x] < fire_spreading[y][x]
 result = sys.maxsize
 breakthroughs = [[i, 0] for i in range(height)] + [[i, width - 1] for i in range(height)] + [[0, i] for i in
