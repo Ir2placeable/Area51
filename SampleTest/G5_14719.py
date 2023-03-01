@@ -1,31 +1,34 @@
 # https://www.acmicpc.net/problem/14719
 import sys
 
-# 그냥 이차원 배열 maps로 구현해서 각 위치를 탐색한다.
-# 만약 특정 위치의 왼쪽과 오른쪽이 막혀있으면 +1 한다.
-
 height, width = map(lambda x: int(x), sys.stdin.readline().split())
-numbers = list(map(lambda x: int(x), sys.stdin.readline().split()))
+block_heights = list(map(lambda x: int(x), sys.stdin.readline().split()))
 
 maps = [[0 for _ in range(width)] for _ in range(height)]
-for i in range(width):
-    for j in range(numbers[i]):
-        maps[j][i] = 1
+for x in range(width):
+    for y in range(block_heights[x]):
+        maps[y][x] = 1
 
 result = 0
 for y in range(height):
     for x in range(width):
-        if maps[y][x] == 0:
-            left, right = False, False
+        # 블록인 곳은 체크하지 않음
+        if maps[y][x] == 1:
+            continue
 
-            for i in range(0, x):
-                if maps[y][i] == 1:
-                    left = True
-                    break
-            for i in range(x, width):
-                if maps[y][i] == 1:
-                    right = True
-                    break
-            if left and right:
-                result += 1
+        isLeft, isRight = False, False
+        # 왼쪽 체크
+        for left in range(0, x):
+            if maps[y][left] == 1:
+                isLeft = True
+                break
+
+        # 오른쪽 체크
+        for right in range(x+1, width):
+            if maps[y][right] == 1:
+                isRight = True
+                break
+
+        if isLeft and isRight:
+            result += 1
 print(result)
