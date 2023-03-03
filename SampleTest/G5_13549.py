@@ -1,40 +1,42 @@
 # https://www.acmicpc.net/problem/13549
 
-# 단순 BFS 문제로 보인다. + 비용이 들어가 있으니, -> 다익스트라 알고리즘을 적용한다.
+import heapq, sys
 
-import sys
-from collections import deque
+x, target = map(lambda x: int(x), sys.stdin.readline().split())
+total_cost = [sys.maxsize for i in range(100001)]
+total_cost[x] = 0
 
-n, k = map(lambda x: int(x), sys.stdin.readline().split())
-
-cost = [sys.maxsize for _ in range(100001)]
-cost[n] = 0
-queue = deque([n])
+queue = [[0, x]]
+result = 0
 
 while queue:
-    cur_point = queue.popleft()
-    if cur_point == k:
+    current_cost, current_location = heapq.heappop(queue)
+    if current_location != 0 and target % current_location == 0:
+        result = current_cost
         break
 
-    next_points = []
-    if cur_point+1 <= 100000:
-        next_points.append(cur_point+1)
-    if cur_point-1 >= 0:
-        next_points.append(cur_point-1)
+    # 일반 이동 체크
+    next_cases = []
+    # 다음 위치가 x-1 인 경우
+    if current_location > 0:
+        next_cases.append([current_cost + 1, current_location - 1])
+    # 다음 위치가 x+1 인 경우
+    if current_location < 100000:
+        next_cases.append([current_cost + 1, current_location + 1])
 
-    for next_point in next_points:
-        if cost[next_point] < cost[cur_point] + 1:
+    for next_cost, next_location in next_cases:
+        # 이미 과거의 왔던 비용보다, 현재 든 비용이 큰 경우
+        if total_cost[next_location] < next_cost:
             continue
-        cost[next_point] = cost[cur_point] + 1
-        queue.append(next_point)
+        total_cost[next_location] = next_cost
+        heapq.heappush(queue, [next_cost, next_location])
 
-    if cur_point*2 <= 100000:
-        next_point = cur_point*2
-        if cost[next_point] < cost[cur_point]:
-            continue
-        cost[next_point] = cost[cur_point]
-        queue.append(next_point)
+    # 순간 이동 체크
+    if 0 < current_location <= 50000:
+        for next_location in range(current_location, 100001, current_location):
+            if total_cost[next_location] < current_cost:
+                continue
+            total_cost[next_location] = current_cost
+        heapq.heappush(queue, [current_cost, current_location * 2])
 
-print(cost[k])
-
-
+print(result)
