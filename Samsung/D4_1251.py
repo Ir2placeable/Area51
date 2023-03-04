@@ -1,37 +1,40 @@
-# 간선이 정해지지 않은 다익스트라 -> 프림 알고리즘
+# 그래프 간선에 가중치(환경 부담금)가 있다. -> 다익스트라
+# 모든 정점을 통과해야 한다. -> 프림
 
-maxsize = 1000000**2 + 1
-
-
-def GetCost(_from, _to):
-    global e
-    return e * ((_from[0] - _to[0]) ** 2 + (_from[1] - _to[1]) ** 2)
+MAX = 1000000 ** 2 + 1
 
 
-t = int(input())
-for test_case in range(1, t+1):
+def getCost(city1, city2):
+    return E * ((city1[0] - city2[0]) ** 2 + (city1[1] - city2[1]) ** 2)
+
+
+test_case = int(input())
+for case_number in range(1, test_case + 1):
     n = int(input())
-    locationX = list(map(lambda x: int(x), input().split()))
-    locationY = list(map(lambda x: int(x), input().split()))
-    e = float(input())
+    x_locations = list(map(lambda x: int(x), input().split()))
+    y_locations = list(map(lambda x: int(x), input().split()))
+    E = float(input())
 
-    cities = [[locationX[i], locationY[i]] for i in range(n)]
-    result = 0
-    visited = [cities.pop()]
+    cities = []
+    for i in range(n):
+        cities.append([x_locations[i], y_locations[i]])
+    visited_cities = [cities.pop()]
 
+    total_cost = 0
     while cities:
-        min_distance = maxsize
-        min_city = []
-        for visited_city in visited:
-            for next_city in cities:
-                distance = GetCost(visited_city, next_city)
-                if min_distance > distance:
-                    min_distance = distance
-                    min_city = next_city
+        min_cost = MAX
+        next_city = []
 
-        result += min_distance
-        visited.append(min_city)
-        cities.remove(min_city)
+        for visited_city in visited_cities:
+            for left_city in cities:
+                cost = getCost(visited_city, left_city)
+                if cost < min_cost:
+                    next_city = left_city
+                    min_cost = cost
 
-    result = round(result)
-    print("#%d %d" % (test_case, result))
+        cities.remove(next_city)
+        visited_cities.append(next_city)
+        total_cost += min_cost
+
+    result = round(total_cost)
+    print("#%d %d" % (case_number, result))
