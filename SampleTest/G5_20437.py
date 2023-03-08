@@ -1,38 +1,38 @@
 # https://www.acmicpc.net/problem/20437
 
-# 시간복잡도에 대한 고민을 해야한다.
-# 메모리 제한 크기가 매우크다 -> 메모리를 이용하는 방법을 사용해야 한다.
-# 윈도우를 만드는 방식을 고민해야 한다.
+# 알파벳 소문자로 이루어진 문자열 W가 주어진다.
+# 양의 정수 K가 주어진다.
+# 어떤 문자를 정확히 K개를 포함하는 가장 짧은 연속 문자열의 길이를 구한다.
+# 어떤 문자를 정확히 K개를 포함하고, 문자열의 첫 번째와 마지막 글자가 해당 문자로 같은 가장 긴 연속 문자열의 길이를 구한다.
+# (1 ≤ K ≤ |W| ≤ 10,000)
 
 import sys
 from collections import defaultdict
 
 test_case = int(sys.stdin.readline())
 for _ in range(test_case):
-    string = list(sys.stdin.readline().rstrip())
-    k = int(sys.stdin.readline())
+    stringW = sys.stdin.readline().rstrip()
+    target = int(sys.stdin.readline())
+    result1, result2 = sys.maxsize, 0
 
-    candidates = set()
-    for char in string:
-        if string.count(char) >= k:
-            candidates.add(char)
+    alphabet_locations = defaultdict(list)
+    for i in range(len(stringW)):
+        char = stringW[i]
+        alphabet_locations[char].append(i)
 
-    result1 = 10001
-    result2 = 0
-    for item in candidates:
-        start = string.index(item)
-        count = 1
-        for i in range(start + 1, len(string)):
-            if string[i] == item:
-                count += 1
-            if count == k:
-                result1 = min(result1, i - start + 1)
+    isResult = False
+    for alphabet in alphabet_locations:
+        if len(alphabet_locations[alphabet]) < target:
+            continue
+        isResult = True
 
-                if string[i] == string[start]:
-                    result2 = i - start + 1
-                break
+        alphabet_indexes = alphabet_locations[alphabet]
+        for index in range(len(alphabet_indexes)):
+            if index + target - 1 < len(alphabet_indexes):
+                result1 = min(result1, alphabet_indexes[index + target - 1] - alphabet_indexes[index] + 1)
+                result2 = max(result2, alphabet_indexes[index + target - 1] - alphabet_indexes[index] + 1)
 
-    if result2 == 0:
+    if isResult:
+        print(result1, result2)
+    else:
         print(-1)
-        continue
-    print(result1, result2)

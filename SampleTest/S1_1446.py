@@ -1,36 +1,26 @@
 # https://www.acmicpc.net/problem/1446
+import sys, heapq
 
-# 길찾기 + 최소비용 문제 -> 다익스트라 알고리즘
-# 다익스트라 -> heapq 사용
+n, d = map(lambda x: int(x), sys.stdin.readline().split())
+shortcuts = [list(map(lambda x: int(x), sys.stdin.readline().split())) for _ in range(n)]
 
-# 이 문제의 특징은 지름길을 항상 이용하지 않아도 된다는 것임.
-# 한 칸씩 전진하는 경우가 있기 때문에, maps에 한 칸씩 전진하는 경우를 넣고 다익스트라 알고리즘을 시작해야 한다.
-
-import sys
-import heapq
-
-n, target = map(lambda x: int(x), sys.stdin.readline().split())
-maps = [[] for _ in range(10001)]
-for i in range(1000):
-    maps[i].append([1, i+1])
-for _ in range(n):
-    a, b, c = map(lambda x: int(x), sys.stdin.readline().split())
-    if b > target:
+edges_in_node = [[[1, i+1]] for i in range(d+1)]
+for start, end, cost in shortcuts:
+    # 고속도로 범위를 벗어나는 경우
+    if end > d:
         continue
-    maps[a].append([c, b])
+    edges_in_node[start].append([cost, end])
 
-cost = [sys.maxsize for i in range(10001)]
-cost[0] = 0
-queue = []
-heapq.heappush(queue, [0, 0])
+queue = [[0, 0]]
+result = 0
 
 while queue:
-    cur_cost, cur_location = heapq.heappop(queue)
+    current_cost, current_position = heapq.heappop(queue)
+    if current_position == d:
+        result = current_cost
+        break
 
-    for next_cost, next_location in maps[cur_location]:
-        if cost[next_location] < cur_cost + next_cost:
-            continue
+    for add_cost, next_position in edges_in_node[current_position]:
+        heapq.heappush(queue, [current_cost + add_cost, next_position])
 
-        cost[next_location] = cur_cost + next_cost
-        heapq.heappush(queue, [cur_cost + next_cost, next_location])
-print(cost[target])
+print(result)
