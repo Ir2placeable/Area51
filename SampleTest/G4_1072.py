@@ -17,7 +17,7 @@ for i in range(n):
         visible = 1
         for k in range(i + 1, j):
             temp_gradient = getGradient(i, k)
-            if temp_gradient > gradient:
+            if temp_gradient >= gradient:
                 visible = 0
                 break
         isVisible[i][j] = visible

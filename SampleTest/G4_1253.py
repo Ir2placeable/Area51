@@ -1,37 +1,31 @@
 # https://www.acmicpc.net/problem/1253
 
-# '좋다' 수 리스트를 만들어 두고, 하나씩 '좋다' 수 인지 체크하는 방법이 떠오른다.
-# 그러나, 입력 수의 크기가 10억 이다 -> 시간 복잡도를 고려해야 한다.
-# left, right 투 포인터를 이용해서 푸는 방법을 이용한다. -> 숫자가 정렬되어 있어야 한다.
-
-
+# 두개의 수를 더한다는 것이 문제에 써있음 -> 투 포인터가 생각남
 import sys
 
 n = int(sys.stdin.readline())
-numbers = list(map(lambda x: int(x), sys.stdin.readline().split()))
-numbers.sort()
-# print(numbers)
+nums = list(map(lambda x: int(x), sys.stdin.readline().split()))
+nums.sort()
 
-count = 0
-for i in range(n-1, -1, -1):
-    target_number = numbers[i]
+result = 0
+for i in range(n):
+    target_num = nums[i]
+    left, right = 0, n-1
 
-    left = 0
-    right = n-1
     while left < right:
         if left == i:
             left += 1
             continue
-        elif right == i:
+        if right == i:
             right -= 1
             continue
 
-        if numbers[left] + numbers[right] > target_number:
+        left_num, right_num = nums[left], nums[right]
+        if left_num + right_num > target_num:
             right -= 1
-        elif numbers[left] + numbers[right] < target_number:
+        elif left_num + right_num < target_num:
             left += 1
         else:
-            count += 1
+            result += 1
             break
-
-print(count)
+print(result)
